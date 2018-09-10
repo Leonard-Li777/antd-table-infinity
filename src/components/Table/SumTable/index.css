@@ -1,0 +1,9 @@
+.sum-table .ant-table-footer{
+  padding: 0 !important;
+  border: none !important;
+}
+.sum-table .ant-table-footer .ant-table-body{
+  overflow-x: hidden !important;
+  border-top: 1px solid #e8e8e8;
+}
+

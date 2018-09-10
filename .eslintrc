@@ -1,0 +1,44 @@
+{
+  "extends": [
+    "eslint-config-kryfe","plugin:jsx-a11y/recommended"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "plugins": [ "react", "babel", "jest", "import", "prettier","jsx-a11y"],
+  "globals": {
+    "__DEV__": true,
+    "__SERVER__": true,
+    "__HT_LICENSE__": true,
+    "__PROD__": true,
+    "__LEGACY__": true,
+    "__TEST__": true,
+    "__HOST__": true,
+    "__MOCK_API__": true,
+    "__HOST_API__": true,
+    "__HOST_CDN__": true
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": {
+          "resolve": {
+            "extensions": ["", ".js", ".jsx"],
+            "modules": ["src", ".", "node_modules"]
+          }
+        }
+      }
+    }
+  }
+}

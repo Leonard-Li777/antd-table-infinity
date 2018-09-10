@@ -1,0 +1,114 @@
+{
+  "name": "antd-table-infinity",
+  "version": "0.0.1",
+  "scripts": {
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "start": "umi dev",
+    "clean": "rimraf umd lib es",
+    "build:cjs": "better-npm-run build-cjs",
+    "build:es": "better-npm-run build-es",
+    "build:umd": "better-npm-run build-umd",
+    "build": "yarn clean && yarn build:cjs && yarn build:es && yarn build:copy && yarn build:umi",
+    "build:copy": "babel src/components/Table/SumTable/index.css --out-dir ./ --copy-files",
+    "build:umi": "rimraf dist && UMI_ENV=prod HTML=none umi build",
+    "lint": "eslint ./**/*.jsx  --ext .jsx --ext .js --fix",
+    "prepublishOnly": "yarn build && npm version patch && npm config set registry http://registry.npmjs.org",
+    "postpublish": "yarn config set registry https://registry.npm.taobao.org"
+  },
+  "betterScripts": {
+    "build-cjs": {
+      "command": "babel src/components/Table --out-dir lib",
+      "env": {
+        "BABEL_ENV": "cjs"
+      }
+    },
+    "build-es": {
+      "command": "babel src/components/Table --out-dir es",
+      "env": {
+        "BABEL_ENV": "es"
+      }
+    },
+    "build-umd": {
+      "command": "babel src/components/Table --out-dir umd",
+      "env": {
+        "BABEL_ENV": "umd"
+      }
+    }
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "index.css",
+    "src"
+  ],
+  "keywords": [
+    "antd",
+    "table",
+    "infinity",
+    "virtual",
+    "scroll",
+    "loading",
+    "虚拟表格滚动",
+    "表格无限滚动加载"
+  ],
+  "contributors": [
+    "keruyun.com"
+  ],
+  "author": "seaeye777@qq.com",
+  "bugs": {
+    "url": "https://github.com/Leonard-Li777/antd-table-infinity/issues"
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Leonard-Li777/antd-table-infinity.git"
+  },
+  "license": "MIT",
+  "description": "An infinite scroll component based on antd table that supports virtual scrolling & high-performance form http://keruyun.com/",
+  "peerDependencies": {
+    "react": ">=16.3.0",
+    "react-dom": ">=16.3.0"
+  },
+  "dependencies": {
+    "antd-table-infinity": "^0.0.1",
+    "lodash-es": "^4.17.10"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
+    "@babel/plugin-proposal-do-expressions": "^7.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+    "@babel/plugin-proposal-function-bind": "^7.0.0",
+    "@babel/plugin-proposal-function-sent": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@storybook/react": "^3.4.10",
+    "antd": "^3.7.1",
+    "babel-core": "^6.26.3",
+    "better-npm-run": "^0.1.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "rimraf": "^2.6.2",
+    "storybook-readme": "^3.3.0",
+    "umi": "^2.0.2",
+    "umi-plugin-react": "^1.0.2"
+  },
+  "engines": {
+    "node": ">=8.11.2"
+  }
+}
