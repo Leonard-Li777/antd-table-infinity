@@ -3,14 +3,14 @@ import { Spin } from 'antd';
 import { columns, fetchData, sumData } from './stories/Table/mockData';
 
 import { SumTable as Table } from 'antd-table-infinity';
-import 'antd-table-infinity/dist/umi.css';
+import 'antd-table-infinity/dist/index.css';
 import 'antd-table-infinity/index.css';
 
 // import { InfinityTable as Table } from './components/Table';
 // import './components/Table/SumTable/index.css';
 
-// import { InfinityTable as Table } from '../dist/umi';
-// import '../dist/umi.css';
+// import { InfinityTable as Table } from '../dist/index';
+// import '../dist/index.css';
 
 class App extends Component {
   state = {

@@ -1497,6 +1497,13 @@ antd-table-infinity@^0.0.1:
   dependencies:
     lodash-es "^4.17.10"
 
+antd-table-infinity@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-0.0.2.tgz#a72dfed2b4a0c1a5c14532afdd6d5fd90cada22f"
+  dependencies:
+    antd-table-infinity "^0.0.1"
+    lodash-es "^4.17.10"
+
 antd@^3.7.1, antd@^3.8.1:
   version "3.9.1"
   resolved "https://registry.npmjs.org/antd/-/antd-3.9.1.tgz#18034a8599afed9f221c2ac7cf6d9f9aea0c98d4"
