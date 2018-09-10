@@ -1,6 +1,6 @@
 {
   "name": "antd-table-infinity",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "scripts": {
     "storybook": "start-storybook -p 9001 -c .storybook",
     "start": "umi dev",
@@ -12,7 +12,7 @@
     "build:copy": "babel src/components/Table/SumTable/index.css --out-dir ./ --copy-files",
     "build:umi": "rimraf dist && UMI_ENV=prod HTML=none umi build",
     "lint": "eslint ./**/*.jsx  --ext .jsx --ext .js --fix",
-    "prepublishOnly": "yarn build && npm version patch && npm config set registry http://registry.npmjs.org",
+    "prepublishOnly": "npm version patch && yarn build && npm config set registry http://registry.npmjs.org",
     "postpublish": "yarn config set registry https://registry.npm.taobao.org"
   },
   "betterScripts": {
