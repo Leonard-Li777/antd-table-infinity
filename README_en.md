@@ -205,6 +205,6 @@ ReactDOM.render(
 - `import 'antd-table-infinity/index.css'`; CSS containing only the SumTable component
 - `import 'antd-table-infinity/dist/index.css'`; Contains all CSS for antd-related components used
 
-### Detected problem
+### Detected problem
 
 - When editing a cell (such as input characters in input, essentially the repeated rendering of Antd Table to receive new props), there are low-performance in development mode, and production environments do not exist! Mainly performance cost from HMR and Redux DevTools.
