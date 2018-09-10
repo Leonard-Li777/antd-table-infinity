@@ -202,8 +202,8 @@ ReactDOM.render(
 2. 如果你的项目没有安装 antd 组件库, 请使用全量打包文件
 - `import { InfinityTable, SumTable } from 'antd-table-infinity/dist/index.js'`; 包含所有代码及使用到的antd相关组件的所有代码
 - `import 'antd-table-infinity/index.css'`; 只包含SumTable组件的css
-- `import 'antd-table-infinity/dist/index.css'`; 包含使用到的antd相关组件的所有css
+- `import 'antd-table-infinity/dist/index.css'`; 包含使用到的antd相关组件的所有css
 
-### 已发现问题
+### 已发现问题
 
 - 当做单元格编辑功能的时候（如在input中连继输入字符，本质上是 Antd Table 接收新的props的反复渲染）,在开发模式下会存在性能问题，生产环境不会存在！主要是来自 HMR 和 Redux DevTools的性能消耗。
