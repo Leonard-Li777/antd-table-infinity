@@ -84,7 +84,7 @@ class InfinityTable extends PureComponent {
       scrollHeight = length * rowHeight;
     }
 
-    if (pageSize < visibleRowCount) {
+    if (increase > pageSize) {
       console.warn(
         `increase(${increase}) greater than pageSize(${pageSize}) that will cause the scroll bar shake, maybe you set error! `,
       );

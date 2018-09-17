@@ -195,7 +195,7 @@ ReactDOM.render(
 ### 注意事项
 
 1. antd-table-infinity是基于Antd Table的上一层封装，因此使用的时候，确保你的项目已安装antd组件库
-- `import  { InfinityTable, SumTable } 'antd-table-infinity'`; 只包含SumTable组件的css
+- `import  { InfinityTable, SumTable } 'antd-table-infinity'`;
 - `import 'antd-table-infinity/index.css'`; 只包含SumTable组件的css
 
 

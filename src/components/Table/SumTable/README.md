@@ -7,7 +7,6 @@
 - `import 'antd-table-infinity/index.css'`;
 
 ### Usage
-
 antd-table-infinity exposes one module called, `SumTable`, which accepts a few props:
 
 Option              | default       |  Description              
