@@ -97,6 +97,27 @@ class InfinityTable extends PureComponent {
       }),
     );
   }
+  
+  componentDidUpdate() {
+    // fix bug: 当直接传入的dataSource数据量很大，无法滚动的问题。常见于不是按每页大小递增的情况，如1000条已有数据不需loading直接虚拟滚动显示的时候
+    // tableHeight 是很大的值，而this.state.tableHeight只是一个初始小值
+    const { clientHeight: tableHeight } = this.refTable;
+    const { scrollHeight, clientHeight: visibleHeight } = this.refScroll;
+
+    if (
+      (this.state.tableHeight &&
+        Math.abs(tableHeight - this.state.tableHeight) > 200) || // 容许正常误差
+      (this.state.scrollHeight &&
+        Math.abs(scrollHeight - this.state.scrollHeight) > 200) ||
+      (this.state.visibleHeight && visibleHeight !== this.state.visibleHeight)
+    ) {
+      this.setState({
+        scrollTop: this.refScroll.scrollTop,
+        scrollHeight: this.refScroll.scrollHeight,
+        tableHeight: this.refTable.clientHeight,
+      });
+    }
+  }
 
   componentDidMount() {
     /* eslint-disable */
