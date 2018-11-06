@@ -2,7 +2,9 @@ import React, { PureComponent, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { element, bool, number, array, object, func } from 'prop-types';
 import { Table, Spin } from 'antd';
-import { throttle, noop } from 'lodash-es';
+import { throttle, noop } from 'lodash';
+
+import './index.less';
 
 const computeState = (
   { pageSize },
@@ -10,6 +12,7 @@ const computeState = (
 ) => {
   if (scrollHeight === 0) {
     return {
+      startIndex: 0,
       underHeight: 0,
       upperHeight: 0,
     };
@@ -25,8 +28,11 @@ const computeState = (
     startIndex = startIndex + pageSize > size ? size - pageSize : startIndex;
   }
 
-  const upperHeight = Math.round(startIndex * rowHeight);
   const underHeight = Math.round((size - (startIndex + pageSize)) * rowHeight);
+
+  startIndex = startIndex > 0 ? startIndex : 0;
+  const upperHeight = Math.round(startIndex * rowHeight);
+
   return {
     visibleRowCount,
     startIndex,
@@ -57,6 +63,7 @@ class InfinityTable extends PureComponent {
     startIndex: 0, // DOM上的数据集起始索引
     underHeight: 0, // 下撑高
     upperHeight: 0, // 上撑高
+    isPropsChange: false, // 是否是props改变
   };
   static getDerivedStateFromProps(
     { pageSize, dataSource: { length }, loading },
@@ -84,39 +91,21 @@ class InfinityTable extends PureComponent {
       scrollHeight = length * rowHeight;
     }
 
-    if (increase > pageSize) {
+    if (pageSize < increase) {
       console.warn(
         `increase(${increase}) greater than pageSize(${pageSize}) that will cause the scroll bar shake, maybe you set error! `,
       );
     }
-    return computeState(
-      { pageSize },
-      Object.assign(prevState, {
-        size: length,
-        scrollHeight,
-      }),
-    );
-  }
-  
-  componentDidUpdate() {
-    // fix bug: 当直接传入的dataSource数据量很大，无法滚动的问题。常见于不是按每页大小递增的情况，如1000条已有数据不需loading直接虚拟滚动显示的时候
-    // tableHeight 是很大的值，而this.state.tableHeight只是一个初始小值
-    const { clientHeight: tableHeight } = this.refTable;
-    const { scrollHeight, clientHeight: visibleHeight } = this.refScroll;
-
-    if (
-      (this.state.tableHeight &&
-        Math.abs(tableHeight - this.state.tableHeight) > 200) || // 容许正常误差
-      (this.state.scrollHeight &&
-        Math.abs(scrollHeight - this.state.scrollHeight) > 200) ||
-      (this.state.visibleHeight && visibleHeight !== this.state.visibleHeight)
-    ) {
-      this.setState({
-        scrollTop: this.refScroll.scrollTop,
-        scrollHeight: this.refScroll.scrollHeight,
-        tableHeight: this.refTable.clientHeight,
-      });
-    }
+    return {
+      ...computeState(
+        { pageSize },
+        Object.assign(prevState, {
+          size: length,
+          scrollHeight,
+        }),
+      ),
+      isPropsChange: true,
+    };
   }
 
   componentDidMount() {
@@ -275,47 +264,58 @@ class InfinityTable extends PureComponent {
   updateTable = () => {
     const { clientHeight: tableHeight } = this.refTable;
     const { scrollHeight, clientHeight: visibleHeight } = this.refScroll;
+    const { isPropsChange } = this.state;
 
-    if (
-      // fix bug: 可能存在DOM更新时空白的情况，此种无效状态，需要过虑掉
-      (this.state.tableHeight &&
-        Math.abs(tableHeight - this.state.tableHeight) > 200) || // 容许正常误差
-      (this.state.scrollHeight &&
-        Math.abs(scrollHeight - this.state.scrollHeight) > 200) ||
-      (this.state.visibleHeight && visibleHeight !== this.state.visibleHeight)
-    ) {
-      if (this.props.debug) {
-        console.log({
-          visibleHeight,
-          'this.state.visibleHeight': this.state.visibleHeight,
-        });
-        console.log({
-          tableHeight,
-          'this.state.tableHeight': this.state.tableHeight,
-        });
-        console.log({
-          scrollHeight,
-          'this.state.scrollHeight': this.state.scrollHeight,
-        });
+    if (!isPropsChange) {
+      // fix bug: 当直接传入的dataSource数据量很大，无法滚动的问题。常见于不是按每页大小递增的情况，如1000条已有数据不需loading直接虚拟滚动显示的时候
+      // 如果 isPropsChange === true 则下面的情况是合理的，不能退出state计算，要求重新计算
+      if (
+        // fix bug: 可能存在DOM更新时空白的情况，此种无效状态，需要过虑掉， （tableHeight 是很大的值，而this.state.tableHeight只是一个初始小值）
+        (this.state.tableHeight &&
+          Math.abs(tableHeight - this.state.tableHeight) > 200) || // 容许正常误差
+        (this.state.scrollHeight &&
+          Math.abs(scrollHeight - this.state.scrollHeight) > 200) ||
+        (this.state.visibleHeight && visibleHeight !== this.state.visibleHeight)
+      ) {
+        if (this.props.debug) {
+          console.log({
+            visibleHeight,
+            'this.state.visibleHeight': this.state.visibleHeight,
+          });
+          console.log({
+            tableHeight,
+            'this.state.tableHeight': this.state.tableHeight,
+          });
+          console.log({
+            scrollHeight,
+            'this.state.scrollHeight': this.state.scrollHeight,
+          });
+        }
+        return;
       }
-      return;
     }
 
     this.setState(
-      computeState(
-        this.props,
-        Object.assign(this.state, {
-          direction:
-            this.refScroll.scrollTop - this.state.scrollTop < 0 ? 'up' : 'down',
-          scrollTop: this.refScroll.scrollTop,
-          visibleHeight,
-          scrollHeight,
-          tableHeight,
-        }),
-      ),
+      {
+        ...computeState(
+          this.props,
+          Object.assign(this.state, {
+            direction:
+              this.refScroll.scrollTop - this.state.scrollTop < 0
+                ? 'up'
+                : 'down',
+            scrollTop: this.refScroll.scrollTop,
+            visibleHeight,
+            scrollHeight,
+            tableHeight,
+          }),
+        ),
+        isPropsChange: false,
+      },
       // () => console.log('computeState done', this.state),
     );
   };
+
   toggleObserver(condition = true) {
     if (condition) {
       this.io.observe(this.refUpperPlaceholder);
@@ -359,6 +359,7 @@ class InfinityTable extends PureComponent {
           rowKey={record => record.key}
           dataSource={dataSource.slice(startIndex, startIndex + pageSize)}
           pagination={false}
+          className="rich-table"
         />
       </Fragment>
     );
@@ -394,7 +395,7 @@ InfinityTable.propTypes = {
   sumData: array, // 合计行
   dataSource: array.isRequired,
   columns: object.isRequired,
-  forwardedRef: func,
+  forwardedRef: func.isRequired,
   debug: bool,
   pageSize: number,
   loading: bool,
