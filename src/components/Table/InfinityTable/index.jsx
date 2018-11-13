@@ -2,9 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { element, bool, number, array, object, func } from 'prop-types';
 import { Table, Spin } from 'antd';
-import { throttle, noop } from 'lodash';
-
-import './index.less';
+import { throttle, noop } from 'lodash-es';
 
 const computeState = (
   { pageSize },
@@ -359,7 +357,7 @@ class InfinityTable extends PureComponent {
           rowKey={record => record.key}
           dataSource={dataSource.slice(startIndex, startIndex + pageSize)}
           pagination={false}
-          className="rich-table"
+          className="infinity-table"
         />
       </Fragment>
     );
