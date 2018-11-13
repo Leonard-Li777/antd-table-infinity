@@ -1973,25 +1973,12 @@ antd-mobile@^2.2.3:
     rmc-tabs "~1.2.0"
     rmc-tooltip "~1.0.0"
 
-antd-table-infinity@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-0.0.1.tgz#d29b2bafb5a4ed8eb1c1e734a8a8d9f68316348a"
+antd-table-infinity@^0.0.8, antd-table-infinity@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-0.0.9.tgz#3edc54bdf063bacd6f384291a80a9940cf2aaced"
+  integrity sha512-qEPRP5vYhq8ncjwmJAn5woegxjZMPIaw+zTQuAKHxTF98JpFUx6Hub02sY/4cyiRN2KP8bwg6LFbVrKyz8EJLw==
   dependencies:
-    lodash-es "^4.17.10"
-
-antd-table-infinity@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-0.0.2.tgz#a72dfed2b4a0c1a5c14532afdd6d5fd90cada22f"
-  dependencies:
-    antd-table-infinity "^0.0.1"
-    lodash-es "^4.17.10"
-
-antd-table-infinity@^0.0.8:
-  version "0.0.7"
-  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-0.0.7.tgz#53f63e3384a96bbeaa623117457aa40b81340ae3"
-  integrity sha512-2gIWy5viMiGkXCZZnAPfsULSc8h6707K8bhBsPUZhs8BeD8fF5QSxPTWgwSXOwl31OEYREqIN36Jpz78FjyPoA==
-  dependencies:
-    antd-table-infinity "^0.0.2"
+    antd-table-infinity "^0.0.8"
     lodash-es "^4.17.10"
 
 antd@^3.7.1, antd@^3.8.1:
@@ -3243,7 +3230,7 @@ babel-preset-stage-3@^6.24.1:
     babel-plugin-transform-exponentiation-operator "^6.24.1"
     babel-plugin-transform-object-rest-spread "^6.22.0"
 
-babel-preset-umi@^1.0.0, babel-preset-umi@^1.2.1:
+babel-preset-umi@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/babel-preset-umi/-/babel-preset-umi-1.2.1.tgz#2260a065f00a7a677def60b8ee71e56ef6406416"
   integrity sha512-iUo1JgthQuVGEmuV6TS4E3JQghJSfUsWr6VU85bFNUh4X6oB39g9iHHhxuRftJAFcanJ95Ib08C2ZhXY5hgNFw==
@@ -11710,7 +11697,7 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-"semver@2 || 3 || 4 || 5", semver@^5.0.1, semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0:
+"semver@2 || 3 || 4 || 5", semver@5.5.1, semver@^5.0.1, semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0:
   version "5.5.1"
   resolved "http://registry.npm.taobao.org/semver/download/semver-5.5.1.tgz#7dfdd8814bdb7cabc7be0fb1d734cfb66c940477"
 
@@ -12786,7 +12773,7 @@ uglifyjs-webpack-plugin@^1.2.4, uglifyjs-webpack-plugin@^1.3.0:
     webpack-sources "^1.1.0"
     worker-farm "^1.5.2"
 
-umi-build-dev@^1.0.2:
+umi-build-dev@^1.2.5:
   version "1.2.5"
   resolved "https://registry.npmjs.org/umi-build-dev/-/umi-build-dev-1.2.5.tgz#970d8a36ffd26c3c5210861598348020ff06a596"
   integrity sha512-4y/8uN77iEM6kEefijHRJpsFIlVaV6/xZYdxcXihvcLQqXBYx6W65YGHNDuzsjeyuHtxK5Fxvo2HzpsyrvaD8Q==
@@ -12976,26 +12963,29 @@ umi-utils@^1.2.1:
     is-url "^1.2.4"
     slash2 "^2.0.0"
 
-umi@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/umi/-/umi-2.0.2.tgz#b4c079d58b842b4ad0a8de65212cfc66b4f46512"
-  integrity sha512-9hnRBwiYs/cTFrhugRIhNv6OgDMwcQJkTOOg7eAkGiBDQh8rAj7/IAl8ANQWR0bDEBFwPLps1/WsYzDAlFqluA==
+umi@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.npmjs.org/umi/-/umi-2.2.6.tgz#c387be35ff5601eca4c2b1159dd50620f2bc1e4e"
+  integrity sha512-2bdkE6HLc6NppTQRkQN0paWRTcHk3SB5kRF6+uDio2lLnO5mQ7t6vJx1rgro7LGChaJp7cXxuPpqZcu9TXf8hg==
   dependencies:
     "@babel/core" "^7.0.0"
     "@babel/runtime" "^7.0.0"
     "@types/react" "^16.4.9"
-    babel-preset-umi "^1.0.0"
+    babel-preset-umi "^1.2.1"
     chai "^4.1.2"
     cross-spawn "^6.0.5"
     debug "^3.1.0"
     dotenv "^6.0.0"
     ejs "^2.5.7"
+    is-plain-object "^2.0.4"
     is-windows "^1.0.2"
     path-is-absolute "^1.0.1"
     react-loadable "^5.5.0"
     resolve-cwd "^2.0.0"
+    semver "5.5.1"
+    signale "^1.3.0"
     slash2 "^2.0.0"
-    umi-build-dev "^1.0.2"
+    umi-build-dev "^1.2.5"
     update-notifier "^2.3.0"
     uppercamelcase "^3.0.0"
     url "^0.11.0"

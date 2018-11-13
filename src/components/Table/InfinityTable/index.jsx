@@ -357,7 +357,6 @@ class InfinityTable extends PureComponent {
           rowKey={record => record.key}
           dataSource={dataSource.slice(startIndex, startIndex + pageSize)}
           pagination={false}
-          className="infinity-table"
         />
       </Fragment>
     );

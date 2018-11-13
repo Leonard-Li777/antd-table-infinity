@@ -3,6 +3,7 @@ import webpackplugin from './plugin.config';
 
 export default {
   // add for transfer to umi
+  devtool: 'none',
   chainWebpack: webpackplugin,
   plugins: [
     [
