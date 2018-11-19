@@ -1,12 +1,11 @@
 import { bool, number, array, object, func } from 'prop-types';
 import { Table } from 'antd';
-import { noop } from 'lodash-es';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import InfinityTable from '../InfinityTable';
 
-
+const noop = () => {};
 class SumTable extends React.Component {
   componentDidMount() {
     /* eslint-disable */
