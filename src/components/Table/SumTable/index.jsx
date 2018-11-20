@@ -73,8 +73,7 @@ SumTable.propTypes = {
   onFetch: func, // 滚动到低部触发Fetch方法
   sumData: array.isRequired, // 合计行
   dataSource: array.isRequired,
-  columns: object.isRequired,
-  forwardedRef: func.isRequired,
+  columns: array.isRequired,
   debug: bool,
   pageSize: number,
   loading: bool,

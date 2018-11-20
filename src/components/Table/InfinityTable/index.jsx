@@ -392,8 +392,8 @@ InfinityTable.propTypes = {
   onFetch: func, // 滚动到低部触发Fetch方法
   sumData: array, // 合计行
   dataSource: array.isRequired,
-  columns: object.isRequired,
-  forwardedRef: func.isRequired,
+  columns: array.isRequired,
+  forwardedRef: object,
   debug: bool,
   pageSize: number,
   loading: bool,
