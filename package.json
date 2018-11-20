@@ -1,6 +1,6 @@
 {
   "name": "antd-table-infinity",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "scripts": {
     "storybook": "start-storybook -p 9001 -c .storybook",
     "start": "umi dev",
