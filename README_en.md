@@ -55,7 +55,7 @@ Option              | default       |  Description
 `onFetch`           |  noop         |  Handles the load data event: `function() => void`
 `pageSize`          |  30           |  size of a page
 `onScroll`          |  null         |  Scroll bar scroll event `function(e) => void`
-`pagination`        |  { defaultCurrent: 1 } |  antd Pagination component, but only received: <br/>position: oneOf(['both', 'top', 'bottom']),<br/>className: string,<br/>defaultCurrent: number,<br/>hideOnSinglePage: bool,<br/>itemRender: func,<br/>showQuickJumper: bool,<br/>showTotal: func,<br/>simple: bool,<br/>size: string,<br/>onChange: func, 
+`pagination`        |  { defaultCurrent: 1 } |  antd Pagination component, but only received: <br/>position: oneOf(['both', 'top', 'bottom']),<br/>className: string,<br/>defaultCurrent: number,<br/>hideOnSinglePage: bool,<br/>itemRender: func,<br/>showQuickJumper: bool,<br/>showTotal: func,<br/>simple: bool,<br/>size: string,<br/>onChange: func, 
 `bidirectionalCachePages`             |  Infinity        |  1 ~ maxPage , how many pages cache side by current page
 `total`             |  0        |  total of data
 `dataSource`             | undefined       |   format: [page, data], get the data of page when fetch success,

@@ -37,11 +37,10 @@
 
 
 ### API 说明
----
+---
 
 # PageTable 
 
-![PageTable Demo](../../../assets/images/antd-table-infinity-page-table.gif "PageTable Demo")
 ### 快速开始
 ---
 - `npm install antd-table-infinity`
@@ -58,7 +57,7 @@ Option               | default       | Description
 `onFetch`            |  noop         | 加载数据，Fetch数据: `function({page, pageSize}) => void`
 `pageSize`           |  30           | 每页数据行数
 `onScroll`           |  null         | 滚动事件监听 `function(e) => void`
-`pagination`        |  { defaultCurrent: 1 } |  antd 组件 Pagination, 但仅接受如下Props: <br/>position: oneOf(['both', 'top', 'bottom']),<br/>className: string,<br/>defaultCurrent: number,<br/>hideOnSinglePage: bool,<br/>itemRender: func,<br/>showQuickJumper: bool,<br/>showTotal: func,<br/>simple: bool,<br/>size: string,<br/>onChange: func, 
+`pagination`        |  { defaultCurrent: 1 } |  antd 组件 Pagination, 但仅接受如下Props: <br/>position: oneOf(['both', 'top', 'bottom']),<br/>className: string,<br/>defaultCurrent: number,<br/>hideOnSinglePage: bool,<br/>itemRender: func,<br/>showQuickJumper: bool,<br/>showTotal: func,<br/>simple: bool,<br/>size: string,<br/>onChange: func, 
 `bidirectionalCachePages`             |  Infinity        |  1 ~ maxPage ，当前页附近缓存的页数，最小为1，最大为maxPage，Infinity相当于maxPage
 `total`             |  0        |  数据总条数
 `dataSource`             | undefined       |   格式: [page, data], 当fetch成功，传递给组件的页码和数据
