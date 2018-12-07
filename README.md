@@ -9,7 +9,7 @@
 ### **为什么会有这个库?**
 众所周知，Antd Table 组件只有翻页模式，我们需要将其改为滚动无限加载，但是 Antd Table 其本身是基于React.Component继承的，而非PureComponent，所以在大数据下存在严重的性能问题。
 
-基于虚拟滚动技术，我们实现了无论表格有多少数据，始终只render指定行数的表格，拥有了高性能滚动，理论上支持无限量数据。
+基于虚拟滚动技术，我们实现了无论表格有多少数据，始终只render指定行数的表格，拥有了高性能滚动，理论上支持无限量数据，拥有最佳用户体验。
 
 本库稍加改动理论上也支任意第三方表格组件！
 
@@ -19,7 +19,7 @@
 - `yarn run storybook`
 - check `localhost:9001`
 
-![antd-table-infinity gif demo](./antd-table-infinity.gif)
+![antd-table-infinity gif demo](./antd-table-infinity-page-table.gif)
 
 ### **兼容说明**
 
@@ -32,14 +32,102 @@
 
 使用了 React 新的 API getDerivedStateFromProps 等
 
-- React 16.3.0+
+- React 16.4.0+
 
 
 
 ### API 说明
----
-## InfinityTable （无限滚动组件）
+---
 
+# PageTable 
+
+![PageTable Demo](../../../assets/images/antd-table-infinity-page-table.gif "PageTable Demo")
+### 快速开始
+---
+- `npm install antd-table-infinity`
+- `import { PageTable } from 'antd-table-infinity'`;
+
+### 使用方法
+---
+antd-table-infinity 导出一个模块 `PageTable`, 它接收如下props:
+
+Option               | default       | Description              
+---------------------|---------------|-----------------------------------------------
+`loading`            |  false        | 表示加载状态，展示loading效果
+`loadingIndicator`   |  null         | 自定义一个react组件去展示loading动画，否则使用内置动画
+`onFetch`            |  noop         | 加载数据，Fetch数据: `function({page, pageSize}) => void`
+`pageSize`           |  30           | 每页数据行数
+`onScroll`           |  null         | 滚动事件监听 `function(e) => void`
+`pagination`        |  { defaultCurrent: 1 } |  antd 组件 Pagination, 但仅接受如下Props: <br/>position: oneOf(['both', 'top', 'bottom']),<br/>className: string,<br/>defaultCurrent: number,<br/>hideOnSinglePage: bool,<br/>itemRender: func,<br/>showQuickJumper: bool,<br/>showTotal: func,<br/>simple: bool,<br/>size: string,<br/>onChange: func, 
+`bidirectionalCachePages`             |  Infinity        |  1 ~ maxPage ，当前页附近缓存的页数，最小为1，最大为maxPage，Infinity相当于maxPage
+`total`             |  0        |  数据总条数
+`dataSource`             | undefined       |   格式: [page, data], 当fetch成功，传递给组件的页码和数据
+`debug`              |  false        | 是否显示Debug console.log信息
+...                  |  ...          | 其它 Antd Table Props
+
+### 示例代码
+---
+
+``` javascript
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { Spin } from 'antd';
+import { PageTable as Table } from 'antd-table-infinity';
+import { columns, fetchData } from './stories/Table/mockData';
+
+class App extends Component {
+  state = {
+    page: 1,
+    data: [],
+    loading: false,
+  };
+  handleFetch = ({ page, pageSize }) => {
+    console.warn('loading', { page, pageSize });
+
+    const startIndex = (page - 1) * pageSize;
+
+    this.setState({ loading: true });
+    fetchData(startIndex, pageSize).then(data =>
+      this.setState({
+        loading: false,
+        data,
+        page,
+      }),
+    );
+  };
+
+  render() {
+    const { page, data, loading } = this.state;
+
+    return (
+      <Table
+        className="custom-classname"
+        pagination={{
+          position: 'both',
+          defaultCurrent: 21,
+          className: 'custom-classname-pagination',
+        }}
+        loading={loading}
+        onFetch={this.handleFetch}
+        pageSize={100}
+        bidirectionalCachePages={1}
+        total={total}
+        dataSource={[page, data]}
+        columns={columns}
+        scroll={{ x: 2500, y: 650 }}
+        bordered
+        debug
+      />
+    );
+  }
+}
+
+ReactDOM.render(
+    <App />,
+  document.getElementById('root')
+);
+```
+## InfinityTable （无限滚动组件）
 ### 快速开始
 - `npm install antd-table-infinity`
 - `import { InfinityTable } from 'antd-table-infinity'`;
@@ -121,6 +209,7 @@ ReactDOM.render(
 ---
 ## SumTable （无限滚动组件, 带合计行）
 
+![antd-table-infinity gif demo](./antd-table-infinity.gif)
 
 ### 快速开始
 - `npm install antd-table-infinity`
@@ -195,13 +284,13 @@ ReactDOM.render(
 ### 注意事项
 
 1. antd-table-infinity是基于Antd Table的上一层封装，因此使用的时候，确保你的项目已安装antd组件库
-- `import  { InfinityTable, SumTable } 'antd-table-infinity'`;
-- `import 'antd-table-infinity/index.css'`; 只包含SumTable组件的css
+- `import  { InfinityTable, SumTable, PageTable } 'antd-table-infinity'`; 只包含表格组件的代码
+- `import 'antd-table-infinity/index.css'`; 只包含PageTable、SumTable组件的css
 
 
 2. 如果你的项目没有安装 antd 组件库, 请使用全量打包文件
-- `import { InfinityTable, SumTable } from 'antd-table-infinity/dist/index.js'`; 包含所有代码及使用到的antd相关组件的所有代码
-- `import 'antd-table-infinity/index.css'`; 只包含SumTable组件的css
+- `import { InfinityTable, SumTable, PageTable } from 'antd-table-infinity/dist/index.js'`; 包含所有代码及使用到的antd相关组件的所有代码
+- `import 'antd-table-infinity/index.css'`; 只包含PageTable、SumTable组件的css
 - `import 'antd-table-infinity/dist/index.css'`; 包含使用到的antd相关组件的所有css
 
 ### 已发现问题

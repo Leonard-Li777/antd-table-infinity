@@ -1,0 +1,42 @@
+.infinity-page-table {
+  #refUpperPlaceholder {
+    > div {
+      position: relative;
+
+      > div {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+    }
+  }
+
+  #refLoadingPlaceholder {
+    margin: -20px 0 0 -40px;
+    pointer-events: none;
+    transform: translate(50%, 50%);
+  }
+
+  padding: 0 !important;
+  border: none !important;
+
+  .ant-table-scroll {
+    .ant-table-header {
+      overflow-x: hidden !important;
+    }
+  }
+
+  &-pagination {
+    padding: 10px;
+    text-align: right;
+  }
+}
+
+.sum-table .ant-table-footer{
+  padding: 0 !important;
+  border: none !important;
+}
+.sum-table .ant-table-footer .ant-table-body{
+  overflow-x: hidden !important;
+  border-top: 1px solid #e8e8e8;
+}

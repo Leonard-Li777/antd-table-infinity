@@ -8,7 +8,7 @@ An infinite scroll component based on antd table that supports virtual scrolling
 ### Why does this library exist
 It is well known that the Antd Table component only has page turning mode, so we need to change it to scroll infinite loading. However, the Antd Table itself is based on `React.Component` extend rather than `PureComponent`, so there are serious performance problems in big data.
 
-Based on virtual scroll technology, we have realized that no matter how much data the table has, the table with the specified number of rows is always rendered, and it has high-performance scroll, which theoretically supports unlimited data.
+Based on virtual scroll technology, we have realized that no matter how much data the table has, the table with the specified number of rows is always rendered, and it has high-performance scroll, which theoretically supports unlimited data and best user experience.
 
 The library is slightly modified and theoretically supports any third-party Table component!
 
@@ -19,7 +19,8 @@ The library is slightly modified and theoretically supports any third-party Tabl
 - `yarn run storybook`
 - check `localhost:9001`
 
-![antd-table-infinity gif demo](./antd-table-infinity.gif)
+![antd-table-infinity gif demo](./antd-table-infinity-page-table.gif)
+
 
 ### **Compatibility**
 
@@ -32,10 +33,96 @@ The IntersectionObserver is used to improve the rolling listening performance so
 
 Use the React new API getDerivedStateFromProps, etc
 
-- React 16.3.0+
+- React 16.4.0+
 
 ### API
+
+# PageTable 
+
+### Quick Start
 ---
+- `npm install antd-table-infinity`
+- `import { PageTable } from 'antd-table-infinity'`;
+
+### Usage
+---
+antd-table-infinity exposes one module called, `PageTable`, which accepts a few props:
+
+Option              | default       |  Description              
+--------------------|---------------|------------------------------------------------
+`loading`           |  false        |  loading status
+`loadingIndicator`  |  null         |  A visual react component for Loading status
+`onFetch`           |  noop         |  Handles the load data event: `function() => void`
+`pageSize`          |  30           |  size of a page
+`onScroll`          |  null         |  Scroll bar scroll event `function(e) => void`
+`pagination`        |  { defaultCurrent: 1 } |  antd Pagination component, but only received: <br/>position: oneOf(['both', 'top', 'bottom']),<br/>className: string,<br/>defaultCurrent: number,<br/>hideOnSinglePage: bool,<br/>itemRender: func,<br/>showQuickJumper: bool,<br/>showTotal: func,<br/>simple: bool,<br/>size: string,<br/>onChange: func, 
+`bidirectionalCachePages`             |  Infinity        |  1 ~ maxPage , how many pages cache side by current page
+`total`             |  0        |  total of data
+`dataSource`             | undefined       |   format: [page, data], get the data of page when fetch success,
+`debug`             |  false        |  display console log for debug
+...                 |  ...          |  Another Antd Table props
+### Code Example
+---
+``` javascript
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { Spin } from 'antd';
+import { PageTable as Table } from 'antd-table-infinity';
+import { columns, fetchData } from './stories/Table/mockData';
+
+class App extends Component {
+  state = {
+    page: 1,
+    data: [],
+    loading: false,
+  };
+  handleFetch = ({ page, pageSize }) => {
+    console.warn('loading', { page, pageSize });
+
+    const startIndex = (page - 1) * pageSize;
+
+    this.setState({ loading: true });
+    fetchData(startIndex, pageSize).then(data =>
+      this.setState({
+        loading: false,
+        data,
+        page,
+      }),
+    );
+  };
+
+  render() {
+    const { page, data, loading } = this.state;
+
+    return (
+      <Table
+        className="custom-classname"
+        pagination={{
+          position: 'both',
+          defaultCurrent: 21,
+          className: 'custom-classname-pagination',
+        }}
+        loading={loading}
+        onFetch={this.handleFetch}
+        pageSize={100}
+        bidirectionalCachePages={1}
+        total={total}
+        dataSource={[page, data]}
+        columns={columns}
+        scroll={{ x: 2500, y: 650 }}
+        bordered
+        debug
+      />
+    );
+  }
+}
+
+ReactDOM.render(
+    <App />,
+  document.getElementById('root')
+);
+```
+
 ## InfinityTable  
 
 ### Quick Start
@@ -120,7 +207,7 @@ ReactDOM.render(
 
 ---
 ## SumTable （infinity with sum row）
-
+![antd-table-infinity gif demo](./antd-table-infinity.gif)
 
 ### Quick Start
 - `npm install antd-table-infinity`
@@ -196,13 +283,13 @@ ReactDOM.render(
 ### Announcements
 
 1. Antd-table-infinity is the top layer of packaging based on antd table, so when you use it, make sure your project has the antd component library installed
-- `import  { InfinityTable, SumTable } 'antd-table-infinity'`; CSS containing only the SumTable component
-- `import 'antd-table-infinity/index.css'`; Contains all CSS for antd-related components used
+- `import  { InfinityTable, SumTable, PageTable } 'antd-table-infinity'`; JS containing only the Table component
+- `import 'antd-table-infinity/index.css'`; CSS containing only the PageTable、SumTable component
 
 
 2. If your project does not have an antd component library installed, use the full package
-- `import { InfinityTable, SumTable } from 'antd-table-infinity/dist/index.js'`; Contains all the code and all the antd-related components used
-- `import 'antd-table-infinity/index.css'`; CSS containing only the SumTable component
+- `import { InfinityTable, SumTable, PageTable } from 'antd-table-infinity/dist/index.js'`; Contains all the js code and all the antd-related components used
+- `import 'antd-table-infinity/index.css'`; CSS containing only the PageTable、SumTable component
 - `import 'antd-table-infinity/dist/index.css'`; Contains all CSS for antd-related components used
 
 ### Detected problem
