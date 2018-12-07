@@ -1703,12 +1703,12 @@ antd-mobile@^2.2.3:
     rmc-tabs "~1.2.0"
     rmc-tooltip "~1.0.0"
 
-antd-table-infinity@^0.0.13:
-  version "0.0.13"
-  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-0.0.13.tgz#23157e03de1355eab5a30d18dc3028d1c140dc3b"
-  integrity sha512-vOtgkZnJ3onDn9VWLbgijYccIal9DnH8WFuKRWG+uWYHpS6342DQjNhCaFchQL1+fkfsud6nRFze6dGsh1h7Mw==
+antd-table-infinity@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-1.0.0.tgz#9822ca2762dd61e2fcf61f9b4d49911db5eeab76"
+  integrity sha512-jgsAs+L8rduLyV+TVdAe4tVrXUx7xvRR+44CdeZvBKGLkpWt6ekiqMnYPAbYVKyxhgYV+naSGRk6ucET664ZKA==
   dependencies:
-    antd-table-infinity "^0.0.13"
+    antd-table-infinity "^1.0.0"
     lodash.throttle "^4.1.1"
 
 antd@^3.8.1:
