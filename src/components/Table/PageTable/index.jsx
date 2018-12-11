@@ -17,7 +17,7 @@ import throttle from 'lodash.throttle';
 
 const noop = () => {};
 
-function fetchDebounce() {
+const fetchDebounce = (() => {
   const loading = [];
   return ({ page, pageSize, onFetch }) => {
     const now = Date.now();
@@ -26,8 +26,7 @@ function fetchDebounce() {
     }
     loading[page] = now;
   };
-}
-const fetchData = fetchDebounce();
+})();
 
 function getCachePage({
   step,
@@ -47,17 +46,17 @@ function getCachePage({
     !cachePageData &&
       currentPage > 0 &&
       currentPage <= maxPage &&
-      fetchData({ page: currentPage, pageSize, onFetch });
+      fetchDebounce({ page: currentPage, pageSize, onFetch });
     !cachePageDataBefore &&
       pageBefore > 0 &&
       pageBefore <= maxPage &&
-      fetchData({ page: pageBefore, pageSize, onFetch });
+      fetchDebounce({ page: pageBefore, pageSize, onFetch });
     !cachePageDataAfter &&
       pageAfter > 0 &&
       pageAfter <= maxPage &&
-      fetchData({ page: pageAfter, pageSize, onFetch });
+      fetchDebounce({ page: pageAfter, pageSize, onFetch });
   }
-  let lastOwnDataPage = [1, 0];
+  let lastOwnDataPage = currentPage;
   if (cachePageDataAfter) {
     lastOwnDataPage = pageAfter;
   } else if (cachePageData) {
@@ -98,8 +97,7 @@ const computeState = (
     let endPage = currentPage + bidirectionalCachePages;
     endPage = endPage > maxPage ? maxPage : endPage;
 
-    cacheData[page] = data; // eslint-disable-line 
-
+    cacheData[page] = data; // eslint-disable-line
     newCacheData = Array.from({ length: maxPage });
 
     Array.prototype.splice.apply(
@@ -137,16 +135,16 @@ const computeState = (
     maxPage === lastOwnDataPage
       ? 0
       : ((maxPage - lastOwnDataPage) * pageSize + (total % pageSize)) *
-        rowHeight,
+          rowHeight,
   );
   const dataSource = cachePageDataBefore
     .concat(cachePageData)
     .concat(cachePageDataAfter);
 
   return {
-    hasCacheBefore: !!cachePageDataBefore,
-    hasCache: !!cachePageData,
-    hasCacheAfter: !!cachePageDataAfter,
+    hasCacheBefore: !!cachePageDataBefore.length,
+    hasCache: !!cachePageData.length,
+    hasCacheAfter: !!cachePageDataAfter.length,
     cacheData: newCacheData,
     dataSource,
     underHeight,
@@ -188,9 +186,8 @@ class InfinityTable extends Component {
 
   componentDidMount() {
     /* eslint-disable */
-    this.refScroll = ReactDOM.findDOMNode(this).getElementsByClassName(
-      'ant-table-body',
-    )[0];
+    this.refRoot = ReactDOM.findDOMNode(this);
+    this.refScroll = this.refRoot.getElementsByClassName('ant-table-body')[0];
     this.refTable = this.refScroll.getElementsByTagName('tbody')[0];
     /* eslint-enabled */
     this.createUnderPlaceholder();
@@ -204,24 +201,42 @@ class InfinityTable extends Component {
         changes => {
           const { debug } = this.props;
           let shouldUpdate = true;
-
           this.ioTargetState = changes.reduce((result, change) => {
             const ret = { ...result };
             switch (change.target) {
               case this.refPageBoundaryBefore:
                 ret.refPageBoundaryBefore = change;
-                // 向下滚动的时候，如果边界第一行数据触发，不需要更新视图，因为上一页的最后一行已经触发了视图更新
-                if (changes.length === 1 && this.state.direction === 'down')
+                // Bug fix:
+                // 向下滚动的时候，如果边界第一行数据触发，不需要更新视图，因为上一页的最后一行已经触发了视图更新,
+                // 但是用户通过点击分页切换，而不是滚动的情况例外，因为此时需要更新页码
+                if (
+                  !this.isPaginationClick &&
+                  changes.length === 1 &&
+                  this.state.direction === 'down'
+                ) {
                   shouldUpdate = false;
+                }
+
                 break;
               case this.refPageBoundaryAfter:
                 ret.refPageBoundaryAfter = change;
+                // Bug fix:
                 // 向上滚动的时候，如果边界最后行数据触发，不需要更新视图，因为上一页的第一行已经触发了视图更新
-                if (changes.length === 1 && this.state.direction === 'up')
+                // 但是用户通过点击分页切换，而不是滚动的情况例外，因为此时需要更新页码
+                if (
+                  !this.isPaginationClick &&
+                  changes.length === 1 &&
+                  this.state.direction === 'up'
+                ) {
                   shouldUpdate = false;
+                }
+                break;
+              default: // console.log(change)
             }
             return ret;
           }, this.ioTargetState);
+
+          this.isPaginationClick = false;
 
           debug &&
             console.log('shouldUpdate:IntersectionObserver', {
@@ -253,6 +268,7 @@ class InfinityTable extends Component {
       const visibleRowCount = Math.round(
         this.refScroll.clientHeight / this.state.rowHeight,
       );
+      this.isReady = true;
       if (pageSize < visibleRowCount) {
         console.warn(
           `pagesize(${pageSize}) less than visible row count(${visibleRowCount}), maybe you set error!`,
@@ -262,30 +278,39 @@ class InfinityTable extends Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     const { pageSize, debug } = nextProps;
-    const { maxPage, currentPage, dataSource, direction } = nextState;
+    const {
+      maxPage,
+      currentPage,
+      dataSource,
+      direction,
+      rowHeight,
+    } = nextState;
     let shouldUpdate = true;
 
     // 有且仅有当前页上下边界同时触发时，表示更换边界，不需要更新
     if (this.isPageBoundary) {
-      this.isPageBoundary = false;
       shouldUpdate = false;
+      this.isPageBoundary = false;
     }
     debug && console.log('shouldUpdate:updateBoundary', { shouldUpdate });
 
-    if (shouldUpdate) {
-      shouldUpdate = [1, maxPage, maxPage - 1, maxPage - 2].includes(
-        currentPage,
-      )
-        ? dataSource.length > 0
-        : dataSource.length === pageSize * 3;
+    if (shouldUpdate && !this.isInitial) {
+      let currentPageReal = currentPage;
+
+      // 由于state中的currentPage延迟与真实的currentPage不一致，当出现这种情况时，强制updateTable()
+      currentPageReal =
+        Math.floor(this.refScroll.scrollTop / (pageSize * rowHeight)) + 1 || 1;
+      currentPageReal = currentPageReal > maxPage ? maxPage : currentPageReal;
+      if (currentPageReal !== currentPage) {
+        this.updateTable();
+        shouldUpdate = false;
+      }
 
       debug &&
-        console.log('shouldUpdate:3Page', {
+        console.log('shouldUpdate:currentPageReal', {
+          currentPageReal,
           currentPage,
-          dataSource,
           shouldUpdate,
-          state: this.state,
-          nextState,
         });
     }
 
@@ -298,14 +323,18 @@ class InfinityTable extends Component {
       switch (direction) {
         case 'up':
           if (
+            this.state.hasCacheAfter &&
             currentPage < maxPage - 2 && // Bug fix: 如果是最后三页向后点击切换，需要刷新视图，否则页码表记停留在前一页
             refPageBoundaryBefore &&
             refPageBoundaryBefore.intersectionRatio > 0
           )
             shouldUpdate = false;
           break;
+
         case 'down':
           if (
+            this.state.currentPage === currentPage &&
+            this.state.hasCacheAfter && // Bug fix: 可能存在3页数据已经加载到了, 但之前没有刷新的情况，所以需要刷新，判断特征是之前的数据小于3页
             refPageBoundaryAfter &&
             refPageBoundaryAfter.intersectionRatio > 0
           )
@@ -316,9 +345,31 @@ class InfinityTable extends Component {
         console.log('shouldUpdate:verboseBoundary', {
           shouldUpdate,
           direction,
+          dataSource,
           Before:
             refPageBoundaryBefore && refPageBoundaryBefore.intersectionRatio,
           After: refPageBoundaryAfter && refPageBoundaryAfter.intersectionRatio,
+        });
+    }
+
+    if (shouldUpdate) {
+      shouldUpdate = [1, maxPage, maxPage - 1, maxPage - 2].includes(
+        currentPage,
+      )
+        ? dataSource.length > 0
+        : [
+            // 如果已经加载3页数据，需要更新视图，否则不在 fullLoading 状态，即使数据不满3页也需要更新视图
+            ...(this.fullLoading ? [] : [0, pageSize, pageSize * 2]),
+            pageSize * 3,
+          ].includes(dataSource.length);
+
+      debug &&
+        console.log('shouldUpdate:3Page', {
+          currentPage,
+          dataSource,
+          shouldUpdate,
+          state: this.state,
+          nextState,
         });
     }
 
@@ -379,6 +430,10 @@ class InfinityTable extends Component {
           this.isPageBoundary = true;
         }
       }
+      const emptyPlaceholder = this.refRoot.querySelector(
+        '.ant-table-placeholder',
+      );
+      emptyPlaceholder && (emptyPlaceholder.style.display = 'none');
     }
   }
   componentWillUnmount() {
@@ -387,7 +442,9 @@ class InfinityTable extends Component {
     this.io.disconnect();
   }
   isInitial = true; // 初始状态，未渲染任何数据
+  isReady = false; // 已渲染首屏数据，可交互的状态
   isPageBoundary = false; // 当前页，上下边界更新
+  isPaginationClick = false;
   refUpperPlaceholder = null;
   refUnderPlaceholder = null;
   refLoadingPlaceholder = null;
@@ -440,7 +497,8 @@ class InfinityTable extends Component {
     const { pageSize } = this.props;
     const { rowHeight } = this.state;
     const [page] = args;
-    this.refScroll.scrollTop = (page - 1) * pageSize * rowHeight;
+    this.refScroll.scrollTop = (page - 1) * pageSize * rowHeight + 1; // Bug fix: + 1个像素,点击页码向后翻页时存在少一个像素就变成上一页的bug
+    this.isPaginationClick = true;
     this.props.pagination &&
       this.props.pagination.onChange &&
       this.props.pagination.onChange(...args);
@@ -464,7 +522,6 @@ class InfinityTable extends Component {
         this.initialReslove();
       }
     }
-
     let currentPage = Math.floor(scrollTop / (pageSize * rowHeight)) + 1 || 1;
     currentPage = currentPage > maxPage ? maxPage : currentPage;
 
@@ -504,43 +561,26 @@ class InfinityTable extends Component {
     const {
       pageSize,
       loadingIndicator,
-      forwardedRef,
       loading,
       total,
       columns,
       debug,
+      forwardedRef,
       pagination,
       ...rest
     } = this.props;
 
     const {
       dataSource,
-      rowHeight,
       upperHeight,
       underHeight,
       cacheData,
-      maxPage,
-      currentPage: currentPagePre,
+      currentPage,
     } = this.state;
 
-    let fullLoading = false;
-    let currentPage = currentPagePre;
-    if (!this.isInitial) {
-      // 由于state中的currentPage延迟与真实的currentPage不一致，当出现这种情况时，强制updateTable()
-      currentPage =
-        Math.floor(this.refScroll.scrollTop / (pageSize * rowHeight)) + 1 || 1;
-      currentPage = currentPage > maxPage ? maxPage : currentPage;
-      debug && console.log('%c Rendering', 'color:#f00;font-weight:bold');
-      if (currentPage !== currentPagePre) {
-        debug &&
-          console.log('%c currentPage !== currentPagePre', 'color:#0f0;', {
-            currentPage,
-            currentPagePre,
-          });
-        this.updateTable();
-      }
-    }
-    fullLoading = !cacheData[currentPage];
+    this.fullLoading = !cacheData[currentPage];
+    const { fullLoading } = this;
+    debug && console.log('%c Rendering', 'color:#f00;font-weight:bold');
 
     return (
       <Fragment>
@@ -568,7 +608,7 @@ class InfinityTable extends Component {
               showQuickJumper
               {...pagination}
               onChange={this.scrollToPage}
-              current={currentPagePre}
+              current={currentPage}
               pageSize={pageSize}
               showSizeChanger={false}
               total={total}
@@ -595,7 +635,7 @@ class InfinityTable extends Component {
               showQuickJumper
               {...pagination}
               onChange={this.scrollToPage}
-              current={currentPagePre}
+              current={currentPage}
               pageSize={pageSize}
               showSizeChanger={false}
               total={total}
@@ -634,11 +674,13 @@ InfinityTable.defaultProps = {
 
 InfinityTable.propTypes = {
   // loading 效果
+  className: string,
   loadingIndicator: element,
   onScroll: func, // 滚动事件
   pagination: oneOfType([
     bool,
     shape({
+      className: string,
       position: oneOf(['both', 'top', 'bottom']),
       className: string,
       defaultCurrent: number,
@@ -651,7 +693,7 @@ InfinityTable.propTypes = {
       onChange: func,
     }),
   ]),
-  onFetch: func.isRequired, // 滚动到低部触发Fetch方法
+  onFetch: func.isRequired, // 滚动触发Fetch方法
   pageSize: number.isRequired,
   bidirectionalCachePages: number.isRequired,
   total: number.isRequired,
