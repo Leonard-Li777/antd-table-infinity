@@ -23,12 +23,14 @@
 
 ### **兼容说明**
 
-由于使用了 IntersectionObserver 提高滚动监听性能，支持浏览器如下
+**自从 antd-table-infinity@1.1.0 添加了 [IntersectionObserver Polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill), 现在兼容所有主流浏览器！！！**
 
-- Chrome 51+
-- Firefox 61+
-- Edge 17+
-- iOS Safari 不兼容
+~~由于使用了 IntersectionObserver 提高滚动监听性能，支持浏览器如下~~
+
+- ~~Chrome 51+~~
+- ~~Firefox 61+~~
+- ~~Edge 17+~~
+- ~~iOS Safari 不兼容~~
 
 使用了 React 新的 API getDerivedStateFromProps 等
 
@@ -291,6 +293,13 @@ ReactDOM.render(
 - `import { InfinityTable, SumTable, PageTable } from 'antd-table-infinity/dist/index.js'`; 包含所有代码及使用到的antd相关组件的所有代码
 - `import 'antd-table-infinity/index.css'`; 只包含PageTable、SumTable组件的css
 - `import 'antd-table-infinity/dist/index.css'`; 包含使用到的antd相关组件的所有css
+
+3. 不包含IntersectionObserver Polyfill的导入
+
+- `import  PageTable 'antd-table-infinity/PageTable'`
+- `import  InfinityTable 'antd-table-infinity/InfinityTable'`
+- `import  SumTable 'antd-table-infinity/SumTable'`
+
 
 ### 已发现问题
 

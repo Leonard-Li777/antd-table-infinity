@@ -22,14 +22,17 @@ The library is slightly modified and theoretically supports any third-party Tabl
 ![antd-table-infinity gif demo](./antd-table-infinity-page-table.gif)
 
 
+
 ### **Compatibility**
 
-The IntersectionObserver is used to improve the rolling listening performance so supports the browser as follows
+**Since antd-table-infinity@1.1.0 add [IntersectionObserver Polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill), compatible across all of the major browsers！！！**
 
-- Chrome 51+
-- Firefox 61+
-- Edge 17+
-- iOS Safari incompatible
+~~The IntersectionObserver is used to improve the rolling listening performance so supports the browser as follows~~
+
+- ~~Chrome 51+~~
+- ~~Firefox 61+~~
+- ~~Edge 17+~~
+- ~~iOS Safari incompatible~~
 
 Use the React new API getDerivedStateFromProps, etc
 
@@ -291,6 +294,12 @@ ReactDOM.render(
 - `import { InfinityTable, SumTable, PageTable } from 'antd-table-infinity/dist/index.js'`; Contains all the js code and all the antd-related components used
 - `import 'antd-table-infinity/index.css'`; CSS containing only the PageTable、SumTable component
 - `import 'antd-table-infinity/dist/index.css'`; Contains all CSS for antd-related components used
+
+3. Import without IntersectionObserver Polyfill
+
+- `import  PageTable 'antd-table-infinity/PageTable'`
+- `import  InfinityTable 'antd-table-infinity/InfinityTable'`
+- `import  SumTable 'antd-table-infinity/SumTable'`
 
 ### Detected problem
 
