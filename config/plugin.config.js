@@ -22,6 +22,4 @@ export default config => {
       .output.libraryTarget('umd');
       return;
   }
-
-  console.log(config.toConfig());
 };
