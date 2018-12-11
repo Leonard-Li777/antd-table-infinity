@@ -41,12 +41,13 @@
 ### API 说明
 ---
 
-# PageTable 
+# PageTable (分页无限滚动)
 
 ### 快速开始
 ---
 - `npm install antd-table-infinity`
 - `import { PageTable } from 'antd-table-infinity'`;
+- `import 'antd-table-infinity/index.css'`;
 
 ### 使用方法
 ---

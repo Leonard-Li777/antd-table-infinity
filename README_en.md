@@ -40,12 +40,13 @@ Use the React new API getDerivedStateFromProps, etc
 
 ### API
 
-# PageTable 
+# PageTable (Infinity Table with Pagination) 
 
 ### Quick Start
 ---
 - `npm install antd-table-infinity`
 - `import { PageTable } from 'antd-table-infinity'`;
+- `import 'antd-table-infinity/index.css'`;
 
 ### Usage
 ---
@@ -217,7 +218,7 @@ ReactDOM.render(
 - `import { SumTable } from 'antd-table-infinity'`;
 - `import 'antd-table-infinity/index.css'`;
 
-### Usage
+### Usage
 
 antd-table-infinity exposes one module called, `SumTable`, which accepts a few props:
 
