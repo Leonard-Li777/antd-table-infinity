@@ -110,7 +110,7 @@ class App extends Component {
         onFetch={this.handleFetch}
         pageSize={100}
         bidirectionalCachePages={1}
-        total={total}
+        total={5000}
         dataSource={[page, data]}
         columns={columns}
         scroll={{ x: 2500, y: 650 }}
