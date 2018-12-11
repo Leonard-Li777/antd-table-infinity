@@ -1,3 +1,5 @@
+import { random } from 'lodash';
+
 const getGuid = () =>
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     /* eslint-disable */
@@ -24,7 +26,7 @@ const fetchData = (startIndex = 0) =>
               };
             }),
       );
-    }, 1000);
+    }, random(0, 1.0) * 1000);
   });
 
 const columns = [
