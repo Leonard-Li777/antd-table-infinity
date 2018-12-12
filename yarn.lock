@@ -1703,20 +1703,12 @@ antd-mobile@^2.2.3:
     rmc-tabs "~1.2.0"
     rmc-tooltip "~1.0.0"
 
-antd-table-infinity@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-1.0.1.tgz#c45c7468d68de5fff6cb63e6b6b574ce23db01a2"
-  integrity sha512-h69ZsUDq9RZ+Sdzctd9f13N2OVNRsDMutK41qfF3BSdppoW6s84UI9D/URy1nOmxRDYbsMndbAysvtLVckTvjA==
-  dependencies:
-    antd-table-infinity "^1.0.1"
-    lodash.throttle "^4.1.1"
-
 antd-table-infinity@^1.1.1:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-1.1.0.tgz#e354bfc43bbf2ff8895f10cfc8a04a26e4cfbf13"
-  integrity sha512-gddlUPUjXCaCOeQVIQBAGf0YKe1EHR4E79kV1y/lLYyVsMs6zIZiBV1XYZitlWQfmx7AKhxmW0Vya8yrzh6ICA==
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/antd-table-infinity/-/antd-table-infinity-1.1.1.tgz#eebe38bb77df2d33c00ed07e6176c3a059a00e49"
+  integrity sha512-wzoThBvn4LvEg7Wc5fLzevDXen3CTVM01kUzo+8Ro7ObNHMUViy4YNxdxU+IEsUtFbpjsGiD1b89vwDbO/kCWA==
   dependencies:
-    antd-table-infinity "^1.0.1"
+    antd-table-infinity "^1.1.1"
     intersection-observer "^0.5.1"
     lodash.throttle "^4.1.1"
 
