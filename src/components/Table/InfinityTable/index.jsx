@@ -215,9 +215,8 @@ class InfinityTable extends PureComponent {
               'scroll',
               this.setStateWithThrottle,
             );
-          } else {
-            this.setStateWithThrottle();
           }
+          this.setStateWithThrottle();
         },
         {
           root: this.refScroll,

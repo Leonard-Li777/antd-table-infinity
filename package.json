@@ -70,11 +70,11 @@
   "license": "MIT",
   "description": "An infinite scroll component based on antd table that supports virtual scrolling & high-performance form http://keruyun.com/",
   "peerDependencies": {
-    "react": ">=16.3.0",
-    "react-dom": ">=16.3.0"
+    "react": ">=16.4.0",
+    "react-dom": ">=16.4.0"
   },
   "dependencies": {
-    "antd-table-infinity": "^1.1.0",
+    "antd-table-infinity": "^1.1.1",
     "intersection-observer": "^0.5.1",
     "lodash.throttle": "^4.1.1"
   },
