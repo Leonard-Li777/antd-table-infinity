@@ -296,11 +296,6 @@ ReactDOM.render(
 - `import 'antd-table-infinity/index.css'`; CSS containing only the PageTable、SumTable component
 - `import 'antd-table-infinity/dist/index.css'`; Contains all CSS for antd-related components used
 
-3. Import without IntersectionObserver Polyfill
-
-- `import  PageTable 'antd-table-infinity/PageTable'`
-- `import  InfinityTable 'antd-table-infinity/InfinityTable'`
-- `import  SumTable 'antd-table-infinity/SumTable'`
 
 ### Detected problem
 
