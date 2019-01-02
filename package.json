@@ -12,8 +12,7 @@
     "build:less": "lessc src/components/Table/index.less ./index.css",
     "build:umi": "rimraf dist & DEBUG=umi:* HTML=none umi build",
     "lint": "eslint ./**/*.jsx  --ext .jsx --ext .js --fix",
-    "prepublishOnly": "yarn build && npm config set registry http://registry.npmjs.org",
-    "postpublish": "yarn config set registry https://registry.npm.taobao.org"
+    "prepublishOnly": "npm version patch && yarn build"
   },
   "betterScripts": {
     "build-cjs": {
@@ -69,12 +68,16 @@
   },
   "license": "MIT",
   "description": "An infinite scroll component based on antd table that supports virtual scrolling & high-performance form http://keruyun.com/",
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org",
+    "access": "public"
+  },
   "peerDependencies": {
     "react": ">=16.4.0",
     "react-dom": ">=16.4.0"
   },
   "dependencies": {
-    "antd-table-infinity": "^1.1.1",
+    "antd-table-infinity": "^1.1.2",
     "intersection-observer": "^0.5.1",
     "lodash.throttle": "^4.1.1"
   },

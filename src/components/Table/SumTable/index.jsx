@@ -52,7 +52,9 @@ class SumTable extends React.Component {
         dataSource={dataSource}
         onScroll={this.handleInfinityTableScroll}
         footer={this.footerRender}
-        className="sum-table"
+        className={`sum-table ${
+          this.props.className ? this.props.className : ''
+        }`}
       />
     );
   }

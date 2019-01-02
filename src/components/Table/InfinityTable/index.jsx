@@ -351,10 +351,10 @@ class InfinityTable extends PureComponent {
           loadingIndicator={loadingIndicator}
         />
         <Table
+          rowKey={record => record.key}
           {...rest}
           ref={forwardedRef}
           columns={columns}
-          rowKey={record => record.key}
           dataSource={dataSource.slice(startIndex, startIndex + pageSize)}
           pagination={false}
         />

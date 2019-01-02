@@ -618,10 +618,10 @@ class InfinityTable extends Component {
             />
           )}
         <Table
+          rowKey={record => record.key}
           {...rest}
           ref={forwardedRef}
           columns={columns}
-          rowKey={record => record.key}
           dataSource={dataSource}
           pagination={false}
           className={`infinity-page-table ${

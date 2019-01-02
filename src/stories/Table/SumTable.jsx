@@ -30,6 +30,7 @@ class App extends Component {
         columns={columns}
         scroll={{ x: 2500, y: 350 }}
         dataSource={this.state.data}
+        className="custom-classname"
         bordered
         debug
       />
