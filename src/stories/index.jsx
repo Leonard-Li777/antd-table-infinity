@@ -8,7 +8,6 @@ import InfinityTableReadme from '../components/Table/InfinityTable/README.md';
 import PageTable from './Table/PageTable';
 import PageTableReadme from '../components/Table/PageTable/README.md';
 import './index.css';
-import '../../index.css'
 
 storiesOf('Table', module)
   .addDecorator(withReadme([SumTableReadme]))
