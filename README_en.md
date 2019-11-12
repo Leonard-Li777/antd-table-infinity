@@ -100,6 +100,7 @@ class App extends Component {
 
     return (
       <Table
+        rowKey='key' // Important, otherwise scrolling page will be a problem
         className="custom-classname"
         pagination={{
           position: 'both',
@@ -188,7 +189,7 @@ class App extends Component {
   render() {
     return (
       <Table
-        key="key"
+        rowKey='key' // Important, otherwise scrolling page will be a problem
         loading={this.state.loading}
         onFetch={this.handleFetch}
         pageSize={100}
@@ -260,7 +261,7 @@ class App extends Component {
   render() {
     return (
       <Table
-        key="key"
+        rowKey='key' // Important, otherwise scrolling page will be a problem
         loading={this.state.loading}
         onFetch={this.handleFetch}
         pageSize={100}
@@ -296,6 +297,7 @@ ReactDOM.render(
 - `import 'antd-table-infinity/index.css'`; CSS containing only the PageTable、SumTable component
 - `import 'antd-table-infinity/dist/index.css'`; Contains all CSS for antd-related components used
 
+3. rowKey='key' Important, antd-table needs a unique key value for each row of data, otherwise scrolling page will be a problem, really no, please use uuid library to create. ref：[https://ant.design/components/table-cn/#%E6%B3%A8%E6%84%8F](https://ant.design/components/table-cn/#%E6%B3%A8%E6%84%8F)
 
 ### Detected problem
 

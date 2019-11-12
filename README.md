@@ -103,6 +103,7 @@ class App extends Component {
 
     return (
       <Table
+        rowKey='key'  // 非常重要，请按你的数据列正确设置，否则滚动会出问题
         className="custom-classname"
         pagination={{
           position: 'both',
@@ -187,7 +188,7 @@ class App extends Component {
   render() {
     return (
       <Table
-        key="key"
+        rowKey='key'  // 非常重要，请按你的数据列正确设置，否则滚动会出问题
         loading={this.state.loading}
         onFetch={this.handleFetch}
         pageSize={100}
@@ -259,7 +260,7 @@ class App extends Component {
   render() {
     return (
       <Table
-        key="key"
+        rowKey='key'  // 非常重要，请按你的数据列正确设置，否则滚动会出问题
         loading={this.state.loading}
         onFetch={this.handleFetch}
         pageSize={100}
@@ -294,6 +295,8 @@ ReactDOM.render(
 - `import { InfinityTable, SumTable, PageTable } from 'antd-table-infinity/dist/index.js'`; 包含所有代码及使用到的antd相关组件的所有代码
 - `import 'antd-table-infinity/index.css'`; 只包含PageTable、SumTable组件的css
 - `import 'antd-table-infinity/dist/index.css'`; 包含使用到的antd相关组件的所有css
+
+3. rowKey='key' 非常重要，antd-table需要的每行数据的唯一键值，否则滚动翻页会出问题，实在没有，请用 uuid 库创建 参考：[https://ant.design/components/table-cn/#%E6%B3%A8%E6%84%8F](https://ant.design/components/table-cn/#%E6%B3%A8%E6%84%8F)
 
 ### 已发现问题
 

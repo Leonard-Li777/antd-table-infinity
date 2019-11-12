@@ -401,3 +401,5 @@ InfinityTable.propTypes = {
 export default React.forwardRef((props, ref) => (
   <InfinityTable {...props} forwardedRef={ref} />
 ));
+
+export { InfinityTable }
