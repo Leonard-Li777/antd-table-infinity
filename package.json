@@ -78,7 +78,7 @@
   },
   "dependencies": {
     "antd-table-infinity": "^1.1.2",
-    "intersection-observer": "^0.5.1",
+    "intersection-observer": "^0.7.0",
     "lodash.throttle": "^4.1.1"
   },
   "devDependencies": {
