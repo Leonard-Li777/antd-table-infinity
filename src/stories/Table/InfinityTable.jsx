@@ -9,14 +9,17 @@ class App extends Component {
     loading: false,
   };
   handleFetch = () => {
-    console.log('loading');
-    this.setState({ loading: true });
-    fetchData(this.state.data.length).then(newData =>
-      this.setState(({ data }) => ({
-        loading: false,
-        data: data.concat(newData),
-      })),
-    );
+    setTimeout(()=>{
+      console.log('loading.....loading......loading');
+      console.log("Data Length", this.state.data.length);
+      this.setState({ loading: true });
+      fetchData(this.state.data.length).then(newData =>
+        this.setState(({ data }) => ({
+          loading: false,
+          data: data.concat(newData),
+        })),
+      );
+    }, 2000)
   };
 
   loadMoreContent = () => (
@@ -44,6 +47,7 @@ class App extends Component {
         scroll={{ y: 450 }}
         dataSource={this.state.data}
         className="custom-classname"
+        threshold={0.5}
         bordered
         debug
       />

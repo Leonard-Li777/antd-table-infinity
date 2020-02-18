@@ -14,7 +14,7 @@ const fetchData = (startIndex = 0) =>
       resolve(
         startIndex >= 500 // 总共只有500条数据
           ? []
-          : Array.from({ length: 50 }).map((_, i) => {
+          : Array.from({ length: 20 }).map((_, i) => {
               // 每次返回100条
               const index = startIndex + i;
               return {

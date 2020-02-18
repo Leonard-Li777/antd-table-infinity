@@ -41,11 +41,11 @@ const computeState = (
 };
 
 class InfinityTable extends PureComponent {
-  static PlaceHolder({ height, domNode, loading, loadingIndicator }) {
+  static PlaceHolder({ height, domNode, loading, loadingIndicator, style }) {
     return (
       domNode &&
       ReactDOM.createPortal(
-        <div style={{ height: `${height}px` }}>
+        <div style={{ height: `${height}px`, ...style }}>
           {loading && loadingIndicator}{' '}
         </div>,
         domNode,
@@ -128,6 +128,7 @@ class InfinityTable extends PureComponent {
             'scroll',
             this.setStateWithThrottle,
           );
+          console.log("Math.abs(this.refScroll.scrollTop - this.state.scrollTop)", Math.abs(this.refScroll.scrollTop - this.state.scrollTop))
           if (
             this.state.scrollTop &&
             Math.abs(this.refScroll.scrollTop - this.state.scrollTop) < 20
@@ -163,7 +164,14 @@ class InfinityTable extends PureComponent {
           const { startIndex, visibleRowCount, size } = this.state;
           const { loading, pageSize } = this.props;
 
+          console.log("refUnderPlaceholder.intersectionRatio", refUnderPlaceholder.intersectionRatio)
+          // console.log("refUpperPlaceholder.intersectionRatio", refUpperPlaceholder.intersectionRatio)
+          console.log("refTable.intersectionRatio", refTable.intersectionRatio)
+
           if (refUnderPlaceholder.intersectionRatio > 0) {
+            console.log("I am inside");
+            console.log("refUpperPlaceholder.intersectionRatio", refUpperPlaceholder.intersectionRatio)
+
             if (
               refTable.intersectionRatio > 0 &&
               startIndex + pageSize + visibleRowCount >= size &&
@@ -220,6 +228,7 @@ class InfinityTable extends PureComponent {
         },
         {
           root: this.refScroll,
+          threshold: this.props.threshold
         },
       );
       this.toggleObserver();
@@ -327,6 +336,9 @@ class InfinityTable extends PureComponent {
   }
 
   render() {
+
+    console.log(this.props.threshold);
+
     const {
       dataSource,
       pageSize,
@@ -349,6 +361,13 @@ class InfinityTable extends PureComponent {
           domNode={this.refUnderPlaceholder}
           loading={loading}
           loadingIndicator={loadingIndicator}
+          style={{
+            "background": "red",
+            "height": "100px",
+            "display": "block",
+            "position": "relative",
+            "marginTop": "-50%"
+          }}
         />
         <Table
           rowKey={record => record.key}
@@ -382,6 +401,7 @@ InfinityTable.defaultProps = {
   debug: false, // display console log for debug
   loading: false, // 是否loading状态
   pageSize: 30, // 真实DOM大小，Reality DOM row count
+  threshold: 1.0 // 
 };
 
 InfinityTable.propTypes = {
@@ -396,6 +416,7 @@ InfinityTable.propTypes = {
   debug: bool,
   pageSize: number,
   loading: bool,
+  threshold: number
 };
 
 export default React.forwardRef((props, ref) => (
