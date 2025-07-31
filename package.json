@@ -107,7 +107,7 @@
     "lodash": "^4.17.11",
     "rimraf": "^2.6.2",
     "storybook-readme": "^3.3.0",
-    "umi": "^2.2.6",
+    "umi": "^4.4.11",
     "umi-plugin-react": "^1.2.3"
   },
   "engines": {
